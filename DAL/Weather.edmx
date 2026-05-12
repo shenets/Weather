@@ -1,0 +1,296 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="WeatherDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cities">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="70" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Descriptions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CityId" Type="int" Nullable="false" />
+          <Property Name="MeasuringId" Type="int" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Measurings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="tinyint" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Temperatures">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CityId" Type="int" Nullable="false" />
+          <Property Name="MeasuringId" Type="int" Nullable="false" />
+          <Property Name="Value" Type="smallint" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Descriptions_Cities">
+          <End Role="Cities" Type="Self.Cities" Multiplicity="1" />
+          <End Role="Descriptions" Type="Self.Descriptions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Descriptions">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Descriptions_Measurings">
+          <End Role="Measurings" Type="Self.Measurings" Multiplicity="1" />
+          <End Role="Descriptions" Type="Self.Descriptions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Measurings">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Descriptions">
+              <PropertyRef Name="MeasuringId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Temperatures_Cities">
+          <End Role="Cities" Type="Self.Cities" Multiplicity="1" />
+          <End Role="Temperatures" Type="Self.Temperatures" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Temperatures">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Temperatures_Measurings">
+          <End Role="Measurings" Type="Self.Measurings" Multiplicity="1" />
+          <End Role="Temperatures" Type="Self.Temperatures" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Measurings">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Temperatures">
+              <PropertyRef Name="MeasuringId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WeatherDBModelStoreContainer">
+          <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Descriptions" EntityType="Self.Descriptions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Measurings" EntityType="Self.Measurings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Temperatures" EntityType="Self.Temperatures" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Descriptions_Cities" Association="Self.FK_Descriptions_Cities">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="Descriptions" EntitySet="Descriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Descriptions_Measurings" Association="Self.FK_Descriptions_Measurings">
+            <End Role="Measurings" EntitySet="Measurings" />
+            <End Role="Descriptions" EntitySet="Descriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Temperatures_Cities" Association="Self.FK_Temperatures_Cities">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="Temperatures" EntitySet="Temperatures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Temperatures_Measurings" Association="Self.FK_Temperatures_Measurings">
+            <End Role="Measurings" EntitySet="Measurings" />
+            <End Role="Temperatures" EntitySet="Temperatures" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WeatherDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="City" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="70" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Descriptions" Relationship="Self.FK_Descriptions_Cities" FromRole="Cities" ToRole="Descriptions" />
+          <NavigationProperty Name="Temperatures" Relationship="Self.FK_Temperatures_Cities" FromRole="Cities" ToRole="Temperatures" />
+        </EntityType>
+        <EntityType Name="Description" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CityId" Type="Int32" Nullable="false" />
+          <Property Name="MeasuringId" Type="Int32" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="City" Relationship="Self.FK_Descriptions_Cities" FromRole="Descriptions" ToRole="Cities" />
+          <NavigationProperty Name="Measuring" Relationship="Self.FK_Descriptions_Measurings" FromRole="Descriptions" ToRole="Measurings" />
+        </EntityType>
+        <EntityType Name="Measuring" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="Byte" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Descriptions" Relationship="Self.FK_Descriptions_Measurings" FromRole="Measurings" ToRole="Descriptions" />
+          <NavigationProperty Name="Temperatures" Relationship="Self.FK_Temperatures_Measurings" FromRole="Measurings" ToRole="Temperatures" />
+        </EntityType>
+        <EntityType Name="Temperature" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CityId" Type="Int32" Nullable="false" />
+          <Property Name="MeasuringId" Type="Int32" Nullable="false" />
+          <Property Name="Value" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="City" Relationship="Self.FK_Temperatures_Cities" FromRole="Temperatures" ToRole="Cities" />
+          <NavigationProperty Name="Measuring" Relationship="Self.FK_Temperatures_Measurings" FromRole="Temperatures" ToRole="Measurings" />
+        </EntityType>
+        <Association Name="FK_Descriptions_Cities">
+          <End Role="Cities" Type="Self.City" Multiplicity="1" />
+          <End Role="Descriptions" Type="Self.Description" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Descriptions">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Temperatures_Cities">
+          <End Role="Cities" Type="Self.City" Multiplicity="1" />
+          <End Role="Temperatures" Type="Self.Temperature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Temperatures">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Descriptions_Measurings">
+          <End Role="Measurings" Type="Self.Measuring" Multiplicity="1" />
+          <End Role="Descriptions" Type="Self.Description" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Measurings">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Descriptions">
+              <PropertyRef Name="MeasuringId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Temperatures_Measurings">
+          <End Role="Measurings" Type="Self.Measuring" Multiplicity="1" />
+          <End Role="Temperatures" Type="Self.Temperature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Measurings">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Temperatures">
+              <PropertyRef Name="MeasuringId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WeatherDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cities" EntityType="Self.City" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="Descriptions" EntityType="Self.Description" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="Measurings" EntityType="Self.Measuring" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="Temperatures" EntityType="Self.Temperature" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <AssociationSet Name="FK_Descriptions_Cities" Association="Self.FK_Descriptions_Cities">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="Descriptions" EntitySet="Descriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Temperatures_Cities" Association="Self.FK_Temperatures_Cities">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="Temperatures" EntitySet="Temperatures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Descriptions_Measurings" Association="Self.FK_Descriptions_Measurings">
+            <End Role="Measurings" EntitySet="Measurings" />
+            <End Role="Descriptions" EntitySet="Descriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Temperatures_Measurings" Association="Self.FK_Temperatures_Measurings">
+            <End Role="Measurings" EntitySet="Measurings" />
+            <End Role="Temperatures" EntitySet="Temperatures" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WeatherDBModelStoreContainer" CdmEntityContainer="WeatherDBEntities">
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="WeatherDBModel.City">
+              <MappingFragment StoreEntitySet="Cities">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Descriptions">
+            <EntityTypeMapping TypeName="WeatherDBModel.Description">
+              <MappingFragment StoreEntitySet="Descriptions">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="MeasuringId" ColumnName="MeasuringId" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Measurings">
+            <EntityTypeMapping TypeName="WeatherDBModel.Measuring">
+              <MappingFragment StoreEntitySet="Measurings">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Temperatures">
+            <EntityTypeMapping TypeName="WeatherDBModel.Temperature">
+              <MappingFragment StoreEntitySet="Temperatures">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="MeasuringId" ColumnName="MeasuringId" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
